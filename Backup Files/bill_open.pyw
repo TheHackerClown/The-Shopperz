@@ -1,5 +1,21 @@
 from tkinter import *
 from tkinter import filedialog
+from PIL import ImageTk, Image
+
+ws = Tk()
+ws.title("Shopperz Opener")
+ws.geometry("400x450")
+bg = ImageTk.PhotoImage(Image.open("Icons/bg.png"))
+lbl = Label(ws,image=bg)
+lbl.place(x=0,y=0)
+fram1 = Frame(ws)
+fram1.pack()
+
+txtarea = Text(ws, width=45, height=20)
+txtarea.pack(pady=20)
+
+pathh = Entry(ws)
+pathh.pack(side=LEFT, expand=True, fill=X, padx=20)
 
 def openFile():
     tf = filedialog.askopenfilename(
@@ -14,23 +30,15 @@ def openFile():
     txtarea.config(state=DISABLED)
     tf.close()
 
-ws = Tk()
-ws.title("Shopperz Opener")
-ws.geometry("400x450")
-ws['bg']='red'
-
-txtarea = Text(ws, width=45, height=20)
-txtarea.pack(pady=20)
-
-pathh = Entry(ws)
-pathh.pack(side=LEFT, expand=True, fill=X, padx=20)
-
-
+saveimg = PhotoImage(file='Icons/open_folder.png')
+save = saveimg.subsample(5, 5)
 
 Button(
     ws, 
     text="Open File", 
-    command=openFile
-    ).pack(side=RIGHT, expand=True, fill=X, padx=20)
+    command=openFile,
+    image=save,
+    compound=LEFT
+    ).pack(side=RIGHT, padx=20)
 
 ws.mainloop()

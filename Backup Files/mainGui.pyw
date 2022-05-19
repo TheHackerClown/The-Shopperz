@@ -2,14 +2,11 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter.ttk import *
 import random
-
-from tkinter import *
 from PIL import ImageTk, Image
-from tkinter.ttk import *
 
-splash_root = Tk()
+splash_root = tk.Tk()
 splash_root.title('Loading.....')
-img = ImageTk.PhotoImage(Image.open("Splash Screen/splash.png"))
+img = ImageTk.PhotoImage(Image.open("Icons/splash.png"))
 label = Label(splash_root, image = img)
 label.pack()
 def main():
@@ -22,9 +19,9 @@ splash_root.mainloop()
 sprz = tk.Tk()
 sprz.title('The Shopperz')
 frame = tk.Frame(sprz,relief='raised',borderwidth=10,bg='blue')
-frame.grid(row=0,column=0)
-frame2 = tk.Frame(sprz,relief='groove',borderwidth=10,bg='red')
-frame2.grid(row=0,column=2)
+frame.pack(side=tk.LEFT)
+frame2 = tk.Frame(sprz,relief='raised',borderwidth=10,bg='red')
+frame2.pack(side=tk.RIGHT)
 sprz.resizable(False, False)
 
 #Setting Item area
@@ -106,6 +103,7 @@ def clr():
 	rate.set(0)
 	quantity.set(0)
 	textarea.delete("1.0",tk.END)
+	paymentinfo.set(paymentinfos[0])
 	rate_of_items.clear()
 	textarea.insert(tk.END, '=============================================\nArticle_Name\t|\tQuantity\t | Rate [Of 1 Item]\n=============================================')
 
@@ -134,10 +132,23 @@ def svebil():
 			
 			messagebox.showinfo('Bill Saved',f'Please review the Bill with number {x} of {a} in the Bills Folder.')
 
-tk.Button(frame2, text='Add Item', bg='green', command=lambda:mkebil()).grid(row=8, column=1)
-tk.Button(frame2, text='Save Bill', bg='green',command=lambda:svebil()).grid(row=8, column=2)
-tk.Button(frame2, text='Refresh Or Clear',bg='red',command=lambda:clr()).grid(row=9, column=1)
-tk.Button(frame2, text='Exit', bg='red',command=lambda:exmsys()).grid(row=9, column=2)
+#icon for button
+clearimgnot = tk.PhotoImage(file='Icons/clear.png')
+clearimg = clearimgnot.subsample(5,5)
+
+exitimgnot = tk.PhotoImage(file='Icons/exit.png')
+exitimg = exitimgnot.subsample(5,5)
+
+addimgnot = tk.PhotoImage(file='Icons/add.png')
+addimg = addimgnot.subsample(5,5)
+
+saveimgnot = tk.PhotoImage(file='Icons/save.png')
+saveimg = saveimgnot.subsample(5,5)
+
+tk.Button(frame2, text='Add Item',image=addimg,borderwidth=0,bg='red', command=lambda:mkebil()).grid(row=8, column=1,columnspan=1)
+tk.Button(frame2, text='Save Bill', image=saveimg,borderwidth=0,bg='red',command=lambda:svebil()).grid(row=8, column=2,columnspan=1)
+tk.Button(frame2, text='Refresh Or Clear',image=clearimg,borderwidth=0,bg='red',command=lambda:clr()).grid(row=9, column=1,columnspan=1)
+tk.Button(frame2, text='Exit', image=exitimg,borderwidth=0,bg='red',command=lambda:exmsys()).grid(row=9, column=2,columnspan=1)
 
 #LOOPING
 sprz.mainloop()
