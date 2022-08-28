@@ -3,6 +3,7 @@ from tkinter import messagebox
 from tkinter.ttk import *
 import random
 from PIL import ImageTk, Image
+from cryptography.fernet import Fernet
 
 splash_root = tk.Tk()
 splash_root.title('Loading.....')
@@ -111,7 +112,8 @@ def exmsys():
 	op = tk.messagebox.askyesno("Exit", "Do you really want to exit?")
 	if op > 0:
 		sprz.destroy()
-
+filed = open('Bills/.temp','rb')
+akey = filed.read()
 def svebil():
 	x = generate()
 	a = name.get()
@@ -129,7 +131,11 @@ def svebil():
 			filer = open(f'Bills/bill {x} {a}.sprz', 'wt')
 			filer.write(f"	  Welcome Krishna's Retail Shop\n\nBill Number:		{x}\nCustomer Name:		{a}\nPhone Number:		{b}\nPayment Done In:		{c}\n\n\n{articles}\n\n=============================================\nTotal Bill Amount :		      {sum_of_rate}\n\n=============================================")
 			filer.close()
-			
+			with open(f"Bills/bill {x} {a}.sprz", "rb") as file:
+				content = file.read()
+				blah = Fernet(akey).encrypt(content)
+			with open(f"Bills/bill {x} {a}.sprz", "wb") as wbf:
+				wbf.write(blah)
 			messagebox.showinfo('Bill Saved',f'Please review the Bill with number {x} of {a} in the Bills Folder.')
 
 #icon for button
