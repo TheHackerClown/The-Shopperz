@@ -3,7 +3,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, filedialog, mes
 from cryptography.fernet import Fernet
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path("./IMG_Data/bill_assets")
+ASSETS_PATH = OUTPUT_PATH / Path("./assets/bill_assets")
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -19,7 +19,7 @@ def openFile():
         filetypes =(('Shopperz Files (Secure)','*.sprz'),('Text (Unsecure)', '*.txt'))
         )
     entry_3.insert(END, tf)
-x= open('IMG_Data/bill_assets/compiler', 'r')
+x= open('assets/bill_assets/compiler', 'r')
 code = x.read(12)
 akey = open('Bills/.temp','rb')
 key = akey.read()
