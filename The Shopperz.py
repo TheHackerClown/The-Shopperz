@@ -1,16 +1,168 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Label, END, StringVar, OptionMenu, Toplevel, messagebox
+from turtle import bgcolor
+from PIL import ImageTk, Image
+import webbrowser
+#from cryptography.fernet import Fernet
 
+#function[declared before gui cuz gives errors]
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path("./assets")
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+def billgen():
+    import random
+    while True:
+        a = str(random.randint(0,9))
+        b = str(random.randint(0,9))
+        c = str(random.randint(0,9))
+        d = str(random.randint(0,9))
+        num = a+b+c+d
+        x = open('Data/Used Bill Numbers/text.txt','r')
+        y = open('Data/Used Bill Numbers/text.txt','a')
+        if num in x:
+            print()
+        else:
+            y.write(num+'\n')
+            break
+    return num
+
+def about():
+    about = Toplevel()
+    about.geometry("439x278")
+    about.title('About')
+    about.iconbitmap(r'Images/favicon.ico')
+    about.configure(bg = "#FFFFFF")
+    canvas = Canvas(
+        about,
+        bg = "#FFFFFF",
+        height = 278,
+        width = 439,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "ridge"
+        )
+    canvas.place(x = 0, y = 0)
+    canvas.create_rectangle(
+        0.0,
+        0.0,
+        439.0,
+        278.0,
+        fill="#D9D9D9",
+        outline="")
+    image_image_1 = PhotoImage(
+        file=relative_to_assets("bg_image.png"))
+    image_1 = canvas.create_image(
+        219.0,
+        139.0,
+        image=image_image_1
+        )
+    button_image_1 = PhotoImage(
+        file=relative_to_assets("replit.png"))
+    button_1 = Button(
+        about,
+        image=button_image_1,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: webbrowser.open('https://www.replit.com/@TheHackerClown'),
+        relief="flat"
+        )
+    button_1.place(
+        x=308.0,
+        y=43.0,
+        width=77.580078125,
+        height=74.13330078125
+        )
+    button_image_2 = PhotoImage(
+        file=relative_to_assets("facebook.png"))
+    button_2 = Button(
+        about,
+        image=button_image_2,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: webbrowser.open('https://www.facebook.com/dhruvpratap.singh.5621'),
+        relief="flat"
+        )
+    button_2.place(
+        x=196.0,
+        y=43.0,
+        width=77.580078125,
+        height=74.13330078125
+        )
+    button_image_3 = PhotoImage(
+        file=relative_to_assets("github.png"))
+    button_3 = Button(
+        about,
+        image=button_image_3,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda:webbrowser.open('https://github.com/TheHackerClown'),
+        relief="flat"
+        )
+    button_3.place(
+        x=196.0,
+        y=156.0,
+        width=77.580078125,
+        height=74.13330078125
+        )
+    button_image_4 = PhotoImage(
+        file=relative_to_assets("instagram.png"))
+    button_4 = Button(
+        about,
+        image=button_image_4,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda:webbrowser.open('https://instagram.com/dhruv.pratap.1402'),
+        relief="flat"
+        )
+    button_4.place(
+        x=308.0,
+        y=156.0,
+        width=77.580078125,
+        height=74.13330078125
+        )
+    about.resizable(False, False)
+    about.mainloop()
 
 
+def insert(txt,d):
+    #ENTRY_1 --> BILLS
+    #ENTRY_2 --> LOGS
+    if d == 'log':
+        entry_2.insert(END,txt+'\n')
+    elif d == 'bill':
+        entry_1.insert(END,txt+'\n')
+def initialize():
+    name = entry_5.get() if entry_5.get() != '' else 'None'
+    mobile = entry_6.get() if entry_6.get() != '' else 'None'
+    billno = billgen()
+    insert(f'============================\n||   THE SHOPPERZ & CO    ||\n============================Bill Number     :	{billno}\n Customer Name   :	{name}\n Phone Number    :	{mobile}\n Payment Done In :	Cash\n \n','bill')
+    insert('[201] Bill Initialized','log')
+
+#The Iconic loading screen
+splash_root = Tk()
+splash_root.title('The Iconic Loading Screen')
+img = ImageTk.PhotoImage(Image.open("Images/splash.png"))
+splash_root.iconbitmap("Images/favicon.ico")
+splash_root.resizable(0,0)
+splash_root.overrideredirect(True)
+x = (540)
+y = (250)
+splash_root.geometry(f'300x200+{int(x)}+{int(y)}')
+label = Label(splash_root, image = img)
+label.pack()
+def main():
+    splash_root.destroy()
+splash_root.after(2000,main)
+splash_root.mainloop()
+
+#main window setup
 window = Tk()
 
+window.title('The Shopperz')
+window.iconbitmap(r'Images/favicon.ico')
 window.geometry("1049x646")
 window.configure(bg = "#DAD9D9")
 
@@ -24,9 +176,10 @@ canvas = Canvas(
     highlightthickness = 0,
     relief = "ridge"
 )
+canvas.place(x=0,y=0)
+
 
 #Background Image
-canvas.place(x = 0, y = 0)
 image_image_1 = PhotoImage(
     file=relative_to_assets("image_1.png"))
 image_1 = canvas.create_image(
@@ -49,7 +202,7 @@ entry_1 = Text(
     highlightthickness=0
 )
 entry_1.place(
-    x=480.0,
+    x=483.0,
     y=60.0,
     width=230.0,
     height=420.0
@@ -124,15 +277,13 @@ entry_4.place(
     height=32.0
 )
 
-#option menu place area
-canvas.create_text(
-    251.0,
-    144.0,
-    anchor="nw",
-    text="here",
-    fill="#FFFFFF",
-    font=("Inter ExtraBold", 10 * -1)
-)
+#option menu
+paymentinfo = StringVar()
+paymentinfos = ('None','Paytm/Other UPI','Cash','Will Pay Later')
+paymentinfo.set(paymentinfos[0])
+options = OptionMenu(window, paymentinfo, *paymentinfos)
+options.configure(width=20,bg='cyan')
+options.place(x=230,y=135)
 
 #name of customer
 entry_image_5 = PhotoImage(
@@ -181,7 +332,7 @@ button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=initialize,
     relief="flat"
 )
 button_1.place(
@@ -198,7 +349,7 @@ button_2 = Button(
     image=button_image_2,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
+    command=lambda:about(),
     relief="flat"
 )
 button_2.place(
