@@ -1,7 +1,9 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Label, END, StringVar, OptionMenu, Toplevel, messagebox
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Label, END, StringVar, OptionMenu, Toplevel, messagebox, Listbox
 from turtle import bgcolor
 from PIL import ImageTk, Image
+import openpyxl
+import string
 import webbrowser
 #from cryptography.fernet import Fernet
 
@@ -126,6 +128,43 @@ def about():
     about.resizable(False, False)
     about.mainloop()
 
+def add_to_list():
+    global a
+    a = item_list.curselection()
+    if a:
+        b = item_list.get(a)
+        entry_4.insert(END,b)
+    else:
+        print()
+
+def init_list():
+    global rate
+    w = openpyxl.load_workbook('Data/Items/main.xlsx')
+    rate = []
+    wb = w.active
+    ap = list(range(2,101))
+    for i in ap:
+        if str(wb[f'A{i}'].value) == 'None':
+            break
+        else:
+            item_list.insert(END,wb[f'A{i}'].value)
+            rate.append(wb[f'C{i}'].value)
+global summation
+summation = []
+def add_to_bill():
+    item = entry_4.get()
+    quantity = entry_3.get()
+    rat = rate[int(a[0])]
+    summation.append(int(int(quantity)*int(rat)))
+    print(summation)
+    insert(f'{item}    \t{quantity}    \t{rat}','bill')
+    insert(f'[200] Added {item}','log')
+    entry_4.delete(0,END)
+    entry_3.delete(0,END)
+
+def generate():
+    summed = sum(summation)
+    insert(' \n \n ============================\nTotal Amount :	 {summed}\n\n============================\n....TH4NK5 F0R U21NG M3....\n','bill')
 
 def insert(txt,d):
     #ENTRY_1 --> BILLS
@@ -134,11 +173,12 @@ def insert(txt,d):
         entry_2.insert(END,txt+'\n')
     elif d == 'bill':
         entry_1.insert(END,txt+'\n')
+
 def initialize():
     name = entry_5.get() if entry_5.get() != '' else 'None'
     mobile = entry_6.get() if entry_6.get() != '' else 'None'
     billno = billgen()
-    insert(f'============================\n||   THE SHOPPERZ & CO    ||\n============================Bill Number     :	{billno}\n Customer Name   :	{name}\n Phone Number    :	{mobile}\n Payment Done In :	Cash\n \n','bill')
+    insert(f'============================\n||   THE SHOPPERZ & CO    ||\n============================Bill Number     :	{billno}\nCustomer Name   :	{name}\nPhone Number    :	{mobile}\nPayment Done In :	{paymentinfo.get()}\n \n============================\nItem  |  Quantity  |   Rate \n============================\n','bill')
     insert('[201] Bill Initialized','log')
 
 #The Iconic loading screen
@@ -165,6 +205,7 @@ window.title('The Shopperz')
 window.iconbitmap(r'Images/favicon.ico')
 window.geometry("1049x646")
 window.configure(bg = "#DAD9D9")
+
 
 #Frame
 canvas = Canvas(
@@ -248,14 +289,10 @@ entry_3.place(
     height=32.0
 )
 
-#todolist place area
-canvas.create_rectangle(
-    37.0,
-    316.0,
-    342.0,
-    473.0,
-    fill="#D9D9D9",
-    outline="")
+#todolist/item list
+item_list = Listbox()
+item_list.place(x=37,y=316,width=310,height=160)
+init_list()
 
 #item name
 entry_image_4 = PhotoImage(
@@ -400,12 +437,12 @@ button_5 = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_5 clicked"),
+    command=lambda:add_to_bill(),
     relief="flat"
 )
 button_5.place(
     x=357.0,
-    y=293.0,
+    y=350.0,
     width=46.0,
     height=46.0
 )
@@ -422,7 +459,24 @@ button_6 = Button(
 )
 button_6.place(
     x=357.0,
-    y=366.0,
+    y=420.0,
+    width=46.0,
+    height=46.0
+)
+
+#add item to configure button
+button_image_42 = PhotoImage(
+    file=relative_to_assets("button_42.png"))
+button_42 = Button(
+    image=button_image_42,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda:add_to_list(),
+    relief="flat"
+)
+button_42.place(
+    x=357.0,
+    y=280.0,
     width=46.0,
     height=46.0
 )
