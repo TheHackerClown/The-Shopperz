@@ -7,4 +7,4 @@ the key will be provided to you when you take this file/ key is placed safely in
 testing key - 951zuAS05IJkPqYVYykyav_EMEhQaz4GgXErlj2xI3E=[binary]
 
 file types - images, .pyw[without console file], .sprz[final bill], 
-             .splg[temporary bill], .csv[item storage], .txt[for logs], .py[modules]
+             .splg[temporary bill], .xlsx[item storage], .txt[for logs], .py[modules]
